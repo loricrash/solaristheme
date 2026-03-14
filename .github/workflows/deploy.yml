@@ -1,0 +1,20 @@
+name: Deploy via FTP
+on:
+  push:
+    branches:
+      - main # Ogni volta che fai il push su 'main', il sito si aggiorna
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Carica file via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /httpdocs/wp-content/themes/tuo-tema/ # Percorso esatto su Tophost
