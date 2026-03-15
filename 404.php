@@ -17,7 +17,6 @@
                 $attachment_id = $_img_query ? $_img_query[0]->ID : null;
 
                 if ( $attachment_id ) :
-                    // 2. Recuperiamo le URL delle diverse dimensioni caricate su WP
                     // Assicurati che 'hero_full_hd' sia registrato nel tuo functions.php
                     $desktop = wp_get_attachment_image_src($attachment_id, 'hero_full_hd')[0]; 
                     $tablet  = wp_get_attachment_image_src($attachment_id, 'large')[0];        
