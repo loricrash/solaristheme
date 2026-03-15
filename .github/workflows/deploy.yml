@@ -3,30 +3,36 @@ name: Deploy Tema su Tophost
 on:
   push:
     branches:
-      - main
+      - main  # Assicurati che il tuo ramo su GitHub Desktop si chiami main (o master)
 
 jobs:
   web-deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Checkout
-        uses: actions/checkout@v3
+      - name: 🚚 Checkout del codice
+        uses: actions/checkout@v4
 
-      - name: 🚀 Caricamento file
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: 🚀 Caricamento file via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # PROVA IL PERCORSO RELATIVO
-          server-dir: ./wp-content/themes/solaristheme/
+          
+          # PERCORSO CORRETTO PER TOPHOST (Verificato su FileZilla)
+          server-dir: /htdocs/wp-content/themes/solaristheme/
+          
+          # CONFIGURAZIONE SICUREZZA TOPHOST
           protocol: ftps
           port: 21
-          security: loose
-          # Evita di caricare la cronologia di Git
+          security: loose  # Accetta il certificato TLS di Tophost
+          timeout: 60000   # Più tempo per evitare il Timeout
+          
+          # FILE DA ESCLUDERE
           exclude: |
             **/.git*
             **/.git*/**
             **/.github*
             **/.github*/**
+            **/node_modules/**
