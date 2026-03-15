@@ -10,7 +10,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Prelevo il codice dal repository
+      - name: 🚚 Prelevo il codice
         uses: actions/checkout@v3
 
       - name: 🚀 Caricamento file via FTP
@@ -19,12 +19,12 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # Percorso aggiornato con il nome esatto
           server-dir: /httpdocs/wp-content/themes/solaristheme/
           protocol: ftps
           port: 21
           security: loose
-          # Opzioni extra per evitare blocchi su cartelle esistenti
+          # Questa opzione aiuta se il server fa i capricci con le cartelle esistenti
+          dangerous-clean-slate: false 
           exclude: |
             **/.git*
             **/.git*/**
