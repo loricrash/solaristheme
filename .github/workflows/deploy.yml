@@ -1,20 +1,36 @@
-name: Deploy via FTP
+name: Deploy Tema su Tophost
+
 on:
   push:
     branches:
-      - main # Ogni volta che fai il push su 'main', il sito si aggiorna
+      - main  # Si attiva ogni volta che fai "Push" dal ramo principale
 
 jobs:
-  deploy:
+  web-deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: 🚚 Prelevo il codice dal repository
         uses: actions/checkout@v3
 
-      - name: Carica file via FTP
+      - name: 🚀 Caricamento file via FTP (TLS Esplicito)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
+          # Questi dati devono essere nei "Secrets" di GitHub
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /httpdocs/wp-content/themes/tuo-tema/ # Percorso esatto su Tophost
+          
+          # Il percorso sul server (Assicurati che sia corretto su FileZilla)
+          server-dir: /httpdocs/wp-content/themes/tuo-tema/
+          
+          # Parametri specifici per la compatibilità con Tophost
+          protocol: ftps
+          port: 21
+          security: loose  # Accetta il certificato non corrispondente di Tophost
+          
+          # Opzionale: esclude la cartella .github dal caricamento sul server
+          exclude: |
+            **/.git*
+            **/.github*
+            **/node_modules*
