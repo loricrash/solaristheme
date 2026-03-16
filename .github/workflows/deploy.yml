@@ -3,7 +3,7 @@ name: Deploy Tema su Tophost
 on:
   push:
     branches:
-      - main  # Assicurati che il tuo ramo su GitHub Desktop si chiami main (o master)
+      - main  
 
 jobs:
   web-deploy:
